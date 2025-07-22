@@ -30,6 +30,7 @@ public class TeacherController {
     private final RegionRepository regionRepository;
     private final ITeacherService teacherService;
     private final Mapper mapper;
+    private final TeacherInsertValidator teacherInsertValidator;
 
 //    @Autowired
 //    public TeacherController(RegionRepository regionRepository) {
@@ -48,6 +49,8 @@ public class TeacherController {
                               BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
         Teacher savedTeacher;
+
+        teacherInsertValidator.validate(teacherInsertDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("regions", regionRepository.findAll(Sort.by("name")));
