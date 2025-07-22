@@ -3,6 +3,7 @@ package gr.aueb.cf.schoolapp2.service;
 import gr.aueb.cf.schoolapp2.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.schoolapp2.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.schoolapp2.dto.TeacherInsertDTO;
+import gr.aueb.cf.schoolapp2.dto.TeacherReadOnlyDTO;
 import gr.aueb.cf.schoolapp2.mapper.Mapper;
 import gr.aueb.cf.schoolapp2.model.Teacher;
 import gr.aueb.cf.schoolapp2.model.static_data.Region;
@@ -11,6 +12,9 @@ import gr.aueb.cf.schoolapp2.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,5 +51,13 @@ public class TeacherService implements ITeacherService {
             log.error("Save failed for Teacher with vat={}. Region id={} invalid", dto.getVat(), dto.getRegionId(), e);
             throw e;
         }
+    }
+
+    @Override
+    @Transactional
+    public Page<TeacherReadOnlyDTO> getPaginatedTeachers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
+        return teacherPage.map(mapper::mapToTeacherReadOnlyDTO);
     }
 }
