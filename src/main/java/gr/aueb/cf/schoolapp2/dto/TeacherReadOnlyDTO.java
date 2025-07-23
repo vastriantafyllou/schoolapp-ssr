@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 public class TeacherReadOnlyDTO {
     private Long id;
+    private String uuid;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String firstname;
