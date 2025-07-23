@@ -34,6 +34,11 @@ public class Region {
         if (teachers == null) teachers = new HashSet<>();
         teachers.add(teacher);
         teacher.setRegion(this);
+    }
 
+    public void removeTeacher(Teacher teacher) {
+        if (teachers == null) return;
+        teachers.remove(teacher);
+        teacher.setRegion(null);
     }
 }
