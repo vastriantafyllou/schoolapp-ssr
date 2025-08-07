@@ -19,7 +19,6 @@ import org.springframework.validation.Validator;
 public class TeacherInsertValidator implements Validator {
 
     private final TeacherRepository teacherRepository;
-    private final RegionRepository regionRepository;
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
