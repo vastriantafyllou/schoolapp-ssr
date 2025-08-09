@@ -1,8 +1,8 @@
 package gr.aueb.cf.schoolapp2.authentication;
 
-import gr.aueb.cf.schoolapp2.core.enums.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,7 +21,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "index.html").permitAll()
                         .requestMatchers("/school/users/register").permitAll()
-                        .requestMatchers("/school/teachers/**").hasAnyAuthority(Role.TEACHER.name())
+                        .requestMatchers("/school/teachers/insert").hasAuthority("EDIT_TEACHERS")
+                        .requestMatchers(HttpMethod.GET,"/school/teachers/edit/{uuid}").hasAuthority("EDIT_TEACHERS")
+                        .requestMatchers(HttpMethod.POST,"/school/teachers/edit").hasAuthority("EDIT_TEACHERS")
+                        .requestMatchers(HttpMethod.GET,"/school/teachers/delete/{uuid}").hasAuthority("EDIT_TEACHERS")
+                        .requestMatchers("/school/teachers/**").hasAnyRole("ADMIN", "TEACHERS_ADMIN")
+                        .requestMatchers("/school/admin/**").hasRole("ADMIN")
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
