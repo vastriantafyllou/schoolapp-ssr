@@ -4,14 +4,14 @@ import gr.aueb.cf.schoolapp2.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.schoolapp2.dto.UserInsertDTO;
 import gr.aueb.cf.schoolapp2.mapper.Mapper;
 import gr.aueb.cf.schoolapp2.model.User;
+import gr.aueb.cf.schoolapp2.model.auth.Role;
+import gr.aueb.cf.schoolapp2.repository.RoleRepository;
 import gr.aueb.cf.schoolapp2.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -20,6 +20,7 @@ public class UserService implements IUserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final Mapper mapper;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -30,6 +31,9 @@ public class UserService implements IUserService{
             }
             User user = mapper.mapToUserEntity(userInsertDTO);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            Role role = roleRepository.findById(userInsertDTO.getRoleId()).orElse(null);
+            user.setRole(role);
             userRepository.save(user);
             log.info("Save succeeded for user with username={}", userInsertDTO.getUsername());
         } catch (EntityAlreadyExistsException e) {
