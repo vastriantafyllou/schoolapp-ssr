@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "index.html").permitAll()
+                        .requestMatchers("/", "/index2.html").permitAll()
                         .requestMatchers("/school/users/register").permitAll()
                         .requestMatchers("/school/teachers/insert").hasAuthority("EDIT_TEACHERS")
                         .requestMatchers(HttpMethod.GET,"/school/teachers/edit/{uuid}").hasAuthority("EDIT_TEACHERS")
@@ -39,6 +39,7 @@ public class SecurityConfig {
 //                        .loginProcessingUrl("/login")
 //                        .failureUrl("/login?error")
                         .defaultSuccessUrl("/school/teachers", false)
+//                        .successHandler("authSuccessHandler)
                         .permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
