@@ -21,6 +21,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea
+!.idea/runConfigurations/
 *.iws
 *.iml
 *.ipr
@@ -37,3 +38,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+.env
+.env.local
+.env.*.local
